@@ -48,7 +48,7 @@ public class CVisitor extends MegaLanguageBaseVisitor<StringBuilder> {
         nestedCount += 1;
         StringBuilder res = stringBuilder()
                 .append("{")
-                .append(fromNewLine(visit(ctx.commands())));
+                .append(visit(ctx.commands()));
         nestedCount -= 1;
         return res.append(fromNewLine("}"));
     }
@@ -153,10 +153,11 @@ public class CVisitor extends MegaLanguageBaseVisitor<StringBuilder> {
     }
 
     private StringBuilder header(StringBuilder stringBuilder) {
-        nestedCount += 1;
-        return stringBuilder
+        StringBuilder res = stringBuilder
                 .append("#include <stdio.h>")
                 .append(fromNewLine("int main() {"));
+        nestedCount += 1;
+        return res;
     }
 
     private StringBuilder footer(StringBuilder stringBuilder) {

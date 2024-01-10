@@ -12,9 +12,9 @@ import java.nio.file.Path;
 public class Main {
 
     public static void main(String[] args) {
-        try (FileWriter fileWriter = new FileWriter("out.c")) {
+        try (FileWriter fileWriter = new FileWriter(args[0])) {
             MegaLanguageLexer megaLanguageLexer = new MegaLanguageLexer(
-                    CharStreams.fromPath(Path.of("src/main/resources/in.2c"))
+                    CharStreams.fromPath(Path.of(args[1]))
             );
             TokenStream tokenStream = new CommonTokenStream(megaLanguageLexer);
             MegaLanguageParser parser = new MegaLanguageParser(tokenStream);
