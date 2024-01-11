@@ -5,14 +5,11 @@ import language.MegaLanguageParser;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class CVisitor extends MegaLanguageBaseVisitor<StringBuilder> {
 
@@ -23,22 +20,16 @@ public class CVisitor extends MegaLanguageBaseVisitor<StringBuilder> {
     private static final StringBuilder EMPTY_SB = new StringBuilder();
 
     private int nestedCount;
-    private final Set<String> declaredVariables;
+    private final Map<String, ExpressionType> declaredVariables;
     private final Map<String, String> variableRename;
     private int tmpCount;
 
 
     public CVisitor() {
         this.nestedCount = 0;
-        this.declaredVariables = new HashSet<>();
+        this.declaredVariables = new HashMap<>();
         this.variableRename = new HashMap<>();
         this.tmpCount = 0;
-    }
-
-    @Override
-    public StringBuilder visitErrorNode(ErrorNode node) {
-        System.out.println(123);
-        return super.visitErrorNode(node);
     }
 
     @Override
@@ -148,20 +139,25 @@ public class CVisitor extends MegaLanguageBaseVisitor<StringBuilder> {
     }
 
     private StringBuilder visitVarDeclaration(String variableName, ExpressionType type, StringBuilder content) {
+        String realVariableName = getVarName(variableName);
         StringBuilder res = new StringBuilder();
-        if (declaredVariables.contains(variableName)) {
+        ExpressionType declaredType = declaredVariables.get(realVariableName);
+        if (declaredType == type) {
             if (content.isEmpty()) {
                 return content;
             }
         } else {
-            declaredVariables.add(variableName);
+            if (declaredType != null) {
+                variableRename.put(realVariableName, genTmpVar());
+            }
+            declaredVariables.put(getVarName(variableName), type);
             res.append(type.cName).append(" ");
             if (content.isEmpty()) {
-                return res.append(variableName).append(COMMAND_END);
+                return res.append(getVarName(variableName)).append(COMMAND_END);
             }
         }
 
-        return res.append(variableName).append(" = ").append(content);
+        return res.append(getVarName(variableName)).append(" = ").append(content);
     }
 
     private StringBuilder visitVarDeclaration(TerminalNode variable, ExpressionType type, StringBuilder content) {
@@ -176,7 +172,11 @@ public class CVisitor extends MegaLanguageBaseVisitor<StringBuilder> {
     @Override
     public StringBuilder visitTerminal(TerminalNode node) {
         if (!skipTerminal(node) && checkVocabulary(node) != null) {
-            return stringBuilder(node.getSymbol().getText());
+            if (node.getSymbol().getType() == MegaLanguageParser.VARIABLE) {
+                return stringBuilder(getVarName(node.getSymbol().getText()));
+            } else {
+                return stringBuilder(node.getSymbol().getText());
+            }
         } else {
             return null;
         }
@@ -191,10 +191,14 @@ public class CVisitor extends MegaLanguageBaseVisitor<StringBuilder> {
         return res;
     }
 
+    private String getVarName(String variable) {
+        return variableRename.getOrDefault(variable, variable);
+    }
+
     private String genTmpVar() {
 
         String tmpVarName = "tmp" + ++tmpCount;
-        while (declaredVariables.contains(tmpVarName)) {
+        while (declaredVariables.containsKey(tmpVarName)) {
             tmpVarName = "tmp" + ++tmpCount;
         }
         return tmpVarName;

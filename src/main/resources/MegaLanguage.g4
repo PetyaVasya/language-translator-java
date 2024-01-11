@@ -57,15 +57,38 @@ read[String name] returns [ExpressionType type]
     ;
 
 condition[java.util.Map<String, ExpressionType> variables]
-    : 'если' typeExpression commandBlock[variables] (else='иначе' commandBlock[variables])?
+    : 'если' typeExpression commandBlock[variables] (else='иначе' commandBlock[variables])? {
+        List<String> ambiguousVariables = $ctx.commandBlock().stream()
+            .map(v -> v.innerVariables)
+
+            .map(java.util.Map::entrySet)
+            .flatMap(java.util.Collection::stream)
+            .collect(java.util.stream.Collectors.groupingBy(
+                   java.util.Map.Entry::getKey,
+                   java.util.stream.Collectors.mapping(
+                           java.util.Map.Entry::getValue,
+                           java.util.stream.Collectors.toSet()
+                   )
+            )).entrySet().stream().filter(v -> v.getValue().size() > 1)
+            .map(java.util.Map.Entry::getKey)
+            .toList();
+        if (!ambiguousVariables.isEmpty()) {
+            throw new AmbiguousVariableException(ambiguousVariables, $parser);
+        }
+    }
     ;
 
 while[java.util.Map<String, ExpressionType> variables]
     : 'пока' typeExpression commandBlock[variables]
     ;
 
-commandBlock[java.util.Map<String, ExpressionType> variables]
-    : LBRACKET commands[$variables] RBRACKET
+commandBlock[java.util.Map<String, ExpressionType> variables] returns [java.util.Map<String, ExpressionType> innerVariables]
+    @init {
+        $innerVariables = new java.util.HashMap<String, ExpressionType>();
+    }
+    : LBRACKET commands[$innerVariables] RBRACKET {
+        $variables.putAll($innerVariables);
+    }
     ;
 
 comp_op
