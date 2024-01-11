@@ -19,17 +19,19 @@ public class MegaLanguageParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, COMMENT=6, LBRACKET=7, RBRACKET=8, 
-		EQ=9, WS=10, LPAREN=11, RPAREN=12, PLUS=13, MINUS=14, TIMES=15, DIV=16, 
-		NUMBER=17, VARIABLE=18, DIGIT=19, LETTER=20, LINE_END=21, SPACE=22;
+		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
+		T__9=10, T__10=11, T__11=12, COMMENT=13, LBRACKET=14, RBRACKET=15, EQ=16, 
+		WS=17, LPAREN=18, RPAREN=19, PLUS=20, MINUS=21, TIMES=22, DIV=23, NUMBER=24, 
+		VARIABLE=25, DIGIT=26, LETTER=27, LINE_END=28, SPACE=29;
 	public static final int
-		RULE_atom = 0, RULE_program = 1, RULE_command = 2, RULE_commands = 3, 
-		RULE_varDeclaration = 4, RULE_print = 5, RULE_read = 6, RULE_condition = 7, 
-		RULE_while = 8, RULE_commandBlock = 9, RULE_expression = 10;
+		RULE_typeExpression = 0, RULE_atom = 1, RULE_program = 2, RULE_command = 3, 
+		RULE_commands = 4, RULE_varDeclaration = 5, RULE_print = 6, RULE_read = 7, 
+		RULE_condition = 8, RULE_while = 9, RULE_commandBlock = 10, RULE_comp_op = 11, 
+		RULE_expression = 12;
 	private static String[] makeRuleNames() {
 		return new String[] {
-			"atom", "program", "command", "commands", "varDeclaration", "print", 
-			"read", "condition", "while", "commandBlock", "expression"
+			"typeExpression", "atom", "program", "command", "commands", "varDeclaration", 
+			"print", "read", "condition", "while", "commandBlock", "comp_op", "expression"
 		};
 	}
 	public static final String[] ruleNames = makeRuleNames();
@@ -37,17 +39,20 @@ public class MegaLanguageParser extends Parser {
 	private static String[] makeLiteralNames() {
 		return new String[] {
 			null, "'\\u043F\\u0435\\u0447\\u0430\\u0442\\u044C'", "'\\u0441\\u0447\\u0438\\u0442\\u0430\\u0442\\u044C\\u0427\\u0438\\u0441\\u043B\\u043E'", 
+			"'\\u0441\\u0447\\u0438\\u0442\\u0430\\u0442\\u044C\\u041B\\u043E\\u0433\\u0438\\u0447'", 
 			"'\\u0435\\u0441\\u043B\\u0438'", "'\\u0438\\u043D\\u0430\\u0447\\u0435'", 
-			"'\\u043F\\u043E\\u043A\\u0430'", null, "'{'", "'}'", "'='", null, "'('", 
-			"')'", "'+'", "'-'", "'*'", "'/'"
+			"'\\u043F\\u043E\\u043A\\u0430'", "'<'", "'>'", "'=='", "'>='", "'<='", 
+			"'!='", null, "'{'", "'}'", "'='", null, "'('", "')'", "'+'", "'-'", 
+			"'*'", "'/'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, null, null, null, null, null, "COMMENT", "LBRACKET", "RBRACKET", 
-			"EQ", "WS", "LPAREN", "RPAREN", "PLUS", "MINUS", "TIMES", "DIV", "NUMBER", 
-			"VARIABLE", "DIGIT", "LETTER", "LINE_END", "SPACE"
+			null, null, null, null, null, null, null, null, null, null, null, null, 
+			null, "COMMENT", "LBRACKET", "RBRACKET", "EQ", "WS", "LPAREN", "RPAREN", 
+			"PLUS", "MINUS", "TIMES", "DIV", "NUMBER", "VARIABLE", "DIGIT", "LETTER", 
+			"LINE_END", "SPACE"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -102,6 +107,99 @@ public class MegaLanguageParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
+	public static class TypeExpressionContext extends ParserRuleContext {
+		public ExpressionType type;
+		public ExpressionContext expression() {
+			return getRuleContext(ExpressionContext.class,0);
+		}
+		public List<TypeExpressionContext> typeExpression() {
+			return getRuleContexts(TypeExpressionContext.class);
+		}
+		public TypeExpressionContext typeExpression(int i) {
+			return getRuleContext(TypeExpressionContext.class,i);
+		}
+		public Comp_opContext comp_op() {
+			return getRuleContext(Comp_opContext.class,0);
+		}
+		public TypeExpressionContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_typeExpression; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MegaLanguageListener ) ((MegaLanguageListener)listener).enterTypeExpression(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MegaLanguageListener ) ((MegaLanguageListener)listener).exitTypeExpression(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MegaLanguageVisitor ) return ((MegaLanguageVisitor<? extends T>)visitor).visitTypeExpression(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final TypeExpressionContext typeExpression() throws RecognitionException {
+		return typeExpression(0);
+	}
+
+	private TypeExpressionContext typeExpression(int _p) throws RecognitionException {
+		ParserRuleContext _parentctx = _ctx;
+		int _parentState = getState();
+		TypeExpressionContext _localctx = new TypeExpressionContext(_ctx, _parentState);
+		TypeExpressionContext _prevctx = _localctx;
+		int _startState = 0;
+		enterRecursionRule(_localctx, 0, RULE_typeExpression, _p);
+		try {
+			int _alt;
+			enterOuterAlt(_localctx, 1);
+			{
+			{
+			setState(27);
+			expression(0);
+			((TypeExpressionContext)_localctx).type =  ExpressionType.INT;
+			}
+			_ctx.stop = _input.LT(-1);
+			setState(37);
+			_errHandler.sync(this);
+			_alt = getInterpreter().adaptivePredict(_input,0,_ctx);
+			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
+				if ( _alt==1 ) {
+					if ( _parseListeners!=null ) triggerExitRuleEvent();
+					_prevctx = _localctx;
+					{
+					{
+					_localctx = new TypeExpressionContext(_parentctx, _parentState);
+					pushNewRecursionContext(_localctx, _startState, RULE_typeExpression);
+					setState(30);
+					if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");
+					setState(31);
+					comp_op();
+					setState(32);
+					typeExpression(3);
+					((TypeExpressionContext)_localctx).type =  ExpressionType.BOOLEAN;
+					}
+					} 
+				}
+				setState(39);
+				_errHandler.sync(this);
+				_alt = getInterpreter().adaptivePredict(_input,0,_ctx);
+			}
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			unrollRecursionContexts(_parentctx);
+		}
+		return _localctx;
+	}
+
+	@SuppressWarnings("CheckReturnValue")
 	public static class AtomContext extends ParserRuleContext {
 		public Token VARIABLE;
 		public TerminalNode NUMBER() { return getToken(MegaLanguageParser.NUMBER, 0); }
@@ -127,25 +225,25 @@ public class MegaLanguageParser extends Parser {
 
 	public final AtomContext atom() throws RecognitionException {
 		AtomContext _localctx = new AtomContext(_ctx, getState());
-		enterRule(_localctx, 0, RULE_atom);
+		enterRule(_localctx, 2, RULE_atom);
 		try {
-			setState(25);
+			setState(43);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case NUMBER:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(22);
+				setState(40);
 				match(NUMBER);
 				}
 				break;
 			case VARIABLE:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(23);
+				setState(41);
 				((AtomContext)_localctx).VARIABLE = match(VARIABLE);
 
-				   	if ( !((CommandsContext)getInvokingContext(3)).variables.contains((((AtomContext)_localctx).VARIABLE!=null?((AtomContext)_localctx).VARIABLE.getText():null)) ) {
+				   	if ( !((CommandsContext)getInvokingContext(4)).variables.containsKey((((AtomContext)_localctx).VARIABLE!=null?((AtomContext)_localctx).VARIABLE.getText():null)) ) {
 				   	    throw new language.UnknownVariableException((((AtomContext)_localctx).VARIABLE!=null?((AtomContext)_localctx).VARIABLE.getText():null), this);
 				   	}
 				   
@@ -192,12 +290,12 @@ public class MegaLanguageParser extends Parser {
 
 	public final ProgramContext program() throws RecognitionException {
 		ProgramContext _localctx = new ProgramContext(_ctx, getState());
-		enterRule(_localctx, 2, RULE_program);
+		enterRule(_localctx, 4, RULE_program);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(27);
-			commands(new java.util.HashSet<>());
+			setState(45);
+			commands(new java.util.HashMap<>());
 			}
 		}
 		catch (RecognitionException re) {
@@ -213,9 +311,9 @@ public class MegaLanguageParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class CommandContext extends ParserRuleContext {
-		public java.util.Set<String> variables;
+		public java.util.Map<String, ExpressionType> variables;
 		public CommandContext(ParserRuleContext parent, int invokingState) { super(parent, invokingState); }
-		public CommandContext(ParserRuleContext parent, int invokingState, java.util.Set<String> variables) {
+		public CommandContext(ParserRuleContext parent, int invokingState, java.util.Map<String, ExpressionType> variables) {
 			super(parent, invokingState);
 			this.variables = variables;
 		}
@@ -274,18 +372,18 @@ public class MegaLanguageParser extends Parser {
 		}
 	}
 
-	public final CommandContext command(java.util.Set<String> variables) throws RecognitionException {
+	public final CommandContext command(java.util.Map<String, ExpressionType> variables) throws RecognitionException {
 		CommandContext _localctx = new CommandContext(_ctx, getState(), variables);
-		enterRule(_localctx, 4, RULE_command);
+		enterRule(_localctx, 6, RULE_command);
 		try {
-			setState(33);
+			setState(51);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case VARIABLE:
 				_localctx = new BaseCommandContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(29);
+				setState(47);
 				varDeclaration(variables);
 				}
 				break;
@@ -293,23 +391,23 @@ public class MegaLanguageParser extends Parser {
 				_localctx = new BaseCommandContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(30);
+				setState(48);
 				print();
 				}
 				break;
-			case T__2:
+			case T__3:
 				_localctx = new StatementContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(31);
+				setState(49);
 				condition(variables);
 				}
 				break;
-			case T__4:
+			case T__5:
 				_localctx = new StatementContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(32);
+				setState(50);
 				while_(variables);
 				}
 				break;
@@ -330,7 +428,7 @@ public class MegaLanguageParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class CommandsContext extends ParserRuleContext {
-		public java.util.Set<String> variables;
+		public java.util.Map<String, ExpressionType> variables;
 		public List<TerminalNode> LINE_END() { return getTokens(MegaLanguageParser.LINE_END); }
 		public TerminalNode LINE_END(int i) {
 			return getToken(MegaLanguageParser.LINE_END, i);
@@ -342,7 +440,7 @@ public class MegaLanguageParser extends Parser {
 			return getRuleContext(CommandContext.class,i);
 		}
 		public CommandsContext(ParserRuleContext parent, int invokingState) { super(parent, invokingState); }
-		public CommandsContext(ParserRuleContext parent, int invokingState, java.util.Set<String> variables) {
+		public CommandsContext(ParserRuleContext parent, int invokingState, java.util.Map<String, ExpressionType> variables) {
 			super(parent, invokingState);
 			this.variables = variables;
 		}
@@ -362,58 +460,58 @@ public class MegaLanguageParser extends Parser {
 		}
 	}
 
-	public final CommandsContext commands(java.util.Set<String> variables) throws RecognitionException {
+	public final CommandsContext commands(java.util.Map<String, ExpressionType> variables) throws RecognitionException {
 		CommandsContext _localctx = new CommandsContext(_ctx, getState(), variables);
-		enterRule(_localctx, 6, RULE_commands);
+		enterRule(_localctx, 8, RULE_commands);
 		int _la;
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(36);
+			setState(54);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,2,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,3,_ctx) ) {
 			case 1:
 				{
-				setState(35);
+				setState(53);
 				match(LINE_END);
 				}
 				break;
 			}
-			setState(39);
+			setState(57);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 262186L) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 33554514L) != 0)) {
 				{
-				setState(38);
+				setState(56);
 				command(variables);
 				}
 			}
 
-			setState(45);
+			setState(63);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,4,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,5,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					{
 					{
-					setState(41);
+					setState(59);
 					match(LINE_END);
-					setState(42);
+					setState(60);
 					command(variables);
 					}
 					} 
 				}
-				setState(47);
+				setState(65);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,4,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,5,_ctx);
 			}
-			setState(49);
+			setState(67);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==LINE_END) {
 				{
-				setState(48);
+				setState(66);
 				match(LINE_END);
 				}
 			}
@@ -433,9 +531,10 @@ public class MegaLanguageParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class VarDeclarationContext extends ParserRuleContext {
-		public java.util.Set<String> variables;
+		public java.util.Map<String, ExpressionType> variables;
+		public ExpressionType type;
 		public VarDeclarationContext(ParserRuleContext parent, int invokingState) { super(parent, invokingState); }
-		public VarDeclarationContext(ParserRuleContext parent, int invokingState, java.util.Set<String> variables) {
+		public VarDeclarationContext(ParserRuleContext parent, int invokingState, java.util.Map<String, ExpressionType> variables) {
 			super(parent, invokingState);
 			this.variables = variables;
 		}
@@ -445,15 +544,17 @@ public class MegaLanguageParser extends Parser {
 		public void copyFrom(VarDeclarationContext ctx) {
 			super.copyFrom(ctx);
 			this.variables = ctx.variables;
+			this.type = ctx.type;
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class VarEvaluatedContext extends VarDeclarationContext {
 		public Token VARIABLE;
+		public TypeExpressionContext typeExpression;
 		public TerminalNode VARIABLE() { return getToken(MegaLanguageParser.VARIABLE, 0); }
 		public TerminalNode EQ() { return getToken(MegaLanguageParser.EQ, 0); }
-		public ExpressionContext expression() {
-			return getRuleContext(ExpressionContext.class,0);
+		public TypeExpressionContext typeExpression() {
+			return getRuleContext(TypeExpressionContext.class,0);
 		}
 		public VarEvaluatedContext(VarDeclarationContext ctx) { copyFrom(ctx); }
 		@Override
@@ -473,6 +574,7 @@ public class MegaLanguageParser extends Parser {
 	@SuppressWarnings("CheckReturnValue")
 	public static class VarReadContext extends VarDeclarationContext {
 		public Token VARIABLE;
+		public ReadContext read;
 		public TerminalNode VARIABLE() { return getToken(MegaLanguageParser.VARIABLE, 0); }
 		public TerminalNode EQ() { return getToken(MegaLanguageParser.EQ, 0); }
 		public ReadContext read() {
@@ -494,37 +596,43 @@ public class MegaLanguageParser extends Parser {
 		}
 	}
 
-	public final VarDeclarationContext varDeclaration(java.util.Set<String> variables) throws RecognitionException {
+	public final VarDeclarationContext varDeclaration(java.util.Map<String, ExpressionType> variables) throws RecognitionException {
 		VarDeclarationContext _localctx = new VarDeclarationContext(_ctx, getState(), variables);
-		enterRule(_localctx, 8, RULE_varDeclaration);
+		enterRule(_localctx, 10, RULE_varDeclaration);
 		try {
-			setState(61);
+			setState(79);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,6,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,7,_ctx) ) {
 			case 1:
 				_localctx = new VarEvaluatedContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(51);
+				setState(69);
 				((VarEvaluatedContext)_localctx).VARIABLE = match(VARIABLE);
-				setState(52);
+				setState(70);
 				match(EQ);
-				setState(53);
-				expression(0);
-				_localctx.variables.add((((VarEvaluatedContext)_localctx).VARIABLE!=null?((VarEvaluatedContext)_localctx).VARIABLE.getText():null));
+				setState(71);
+				((VarEvaluatedContext)_localctx).typeExpression = typeExpression(0);
+
+				        ((VarEvaluatedContext)_localctx).type =  ((VarEvaluatedContext)_localctx).typeExpression.type;
+				        _localctx.variables.put((((VarEvaluatedContext)_localctx).VARIABLE!=null?((VarEvaluatedContext)_localctx).VARIABLE.getText():null), _localctx.type);
+				    
 				}
 				break;
 			case 2:
 				_localctx = new VarReadContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(56);
+				setState(74);
 				((VarReadContext)_localctx).VARIABLE = match(VARIABLE);
-				setState(57);
+				setState(75);
 				match(EQ);
-				setState(58);
-				read((((VarReadContext)_localctx).VARIABLE!=null?((VarReadContext)_localctx).VARIABLE.getText():null));
-				_localctx.variables.add((((VarReadContext)_localctx).VARIABLE!=null?((VarReadContext)_localctx).VARIABLE.getText():null));
+				setState(76);
+				((VarReadContext)_localctx).read = read((((VarReadContext)_localctx).VARIABLE!=null?((VarReadContext)_localctx).VARIABLE.getText():null));
+
+				        ((VarReadContext)_localctx).type =  ((VarReadContext)_localctx).read.type;
+				        _localctx.variables.put((((VarReadContext)_localctx).VARIABLE!=null?((VarReadContext)_localctx).VARIABLE.getText():null), _localctx.type);
+				    
 				}
 				break;
 			}
@@ -542,8 +650,8 @@ public class MegaLanguageParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class PrintContext extends ParserRuleContext {
-		public ExpressionContext expression() {
-			return getRuleContext(ExpressionContext.class,0);
+		public TypeExpressionContext typeExpression() {
+			return getRuleContext(TypeExpressionContext.class,0);
 		}
 		public PrintContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -566,14 +674,14 @@ public class MegaLanguageParser extends Parser {
 
 	public final PrintContext print() throws RecognitionException {
 		PrintContext _localctx = new PrintContext(_ctx, getState());
-		enterRule(_localctx, 10, RULE_print);
+		enterRule(_localctx, 12, RULE_print);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(63);
+			setState(81);
 			match(T__0);
-			setState(64);
-			expression(0);
+			setState(82);
+			typeExpression(0);
 			}
 		}
 		catch (RecognitionException re) {
@@ -590,6 +698,7 @@ public class MegaLanguageParser extends Parser {
 	@SuppressWarnings("CheckReturnValue")
 	public static class ReadContext extends ParserRuleContext {
 		public String name;
+		public ExpressionType type;
 		public ReadContext(ParserRuleContext parent, int invokingState) { super(parent, invokingState); }
 		public ReadContext(ParserRuleContext parent, int invokingState, String name) {
 			super(parent, invokingState);
@@ -601,6 +710,24 @@ public class MegaLanguageParser extends Parser {
 		public void copyFrom(ReadContext ctx) {
 			super.copyFrom(ctx);
 			this.name = ctx.name;
+			this.type = ctx.type;
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class ReadBooleanContext extends ReadContext {
+		public ReadBooleanContext(ReadContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MegaLanguageListener ) ((MegaLanguageListener)listener).enterReadBoolean(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MegaLanguageListener ) ((MegaLanguageListener)listener).exitReadBoolean(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MegaLanguageVisitor ) return ((MegaLanguageVisitor<? extends T>)visitor).visitReadBoolean(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
@@ -623,13 +750,31 @@ public class MegaLanguageParser extends Parser {
 
 	public final ReadContext read(String name) throws RecognitionException {
 		ReadContext _localctx = new ReadContext(_ctx, getState(), name);
-		enterRule(_localctx, 12, RULE_read);
+		enterRule(_localctx, 14, RULE_read);
 		try {
-			_localctx = new ReadIntContext(_localctx);
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(66);
-			match(T__1);
+			setState(88);
+			_errHandler.sync(this);
+			switch (_input.LA(1)) {
+			case T__1:
+				_localctx = new ReadIntContext(_localctx);
+				enterOuterAlt(_localctx, 1);
+				{
+				setState(84);
+				match(T__1);
+				((ReadIntContext)_localctx).type =  ExpressionType.INT;
+				}
+				break;
+			case T__2:
+				_localctx = new ReadBooleanContext(_localctx);
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(86);
+				match(T__2);
+				((ReadBooleanContext)_localctx).type =  ExpressionType.BOOLEAN;
+				}
+				break;
+			default:
+				throw new NoViableAltException(this);
 			}
 		}
 		catch (RecognitionException re) {
@@ -645,10 +790,10 @@ public class MegaLanguageParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class ConditionContext extends ParserRuleContext {
-		public java.util.Set<String> variables;
+		public java.util.Map<String, ExpressionType> variables;
 		public Token else_;
-		public ExpressionContext expression() {
-			return getRuleContext(ExpressionContext.class,0);
+		public TypeExpressionContext typeExpression() {
+			return getRuleContext(TypeExpressionContext.class,0);
 		}
 		public List<CommandBlockContext> commandBlock() {
 			return getRuleContexts(CommandBlockContext.class);
@@ -657,7 +802,7 @@ public class MegaLanguageParser extends Parser {
 			return getRuleContext(CommandBlockContext.class,i);
 		}
 		public ConditionContext(ParserRuleContext parent, int invokingState) { super(parent, invokingState); }
-		public ConditionContext(ParserRuleContext parent, int invokingState, java.util.Set<String> variables) {
+		public ConditionContext(ParserRuleContext parent, int invokingState, java.util.Map<String, ExpressionType> variables) {
 			super(parent, invokingState);
 			this.variables = variables;
 		}
@@ -677,27 +822,27 @@ public class MegaLanguageParser extends Parser {
 		}
 	}
 
-	public final ConditionContext condition(java.util.Set<String> variables) throws RecognitionException {
+	public final ConditionContext condition(java.util.Map<String, ExpressionType> variables) throws RecognitionException {
 		ConditionContext _localctx = new ConditionContext(_ctx, getState(), variables);
-		enterRule(_localctx, 14, RULE_condition);
+		enterRule(_localctx, 16, RULE_condition);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(68);
-			match(T__2);
-			setState(69);
-			expression(0);
-			setState(70);
+			setState(90);
+			match(T__3);
+			setState(91);
+			typeExpression(0);
+			setState(92);
 			commandBlock(variables);
-			setState(73);
+			setState(95);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if (_la==T__3) {
+			if (_la==T__4) {
 				{
-				setState(71);
-				((ConditionContext)_localctx).else_ = match(T__3);
-				setState(72);
+				setState(93);
+				((ConditionContext)_localctx).else_ = match(T__4);
+				setState(94);
 				commandBlock(variables);
 				}
 			}
@@ -717,15 +862,15 @@ public class MegaLanguageParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class WhileContext extends ParserRuleContext {
-		public java.util.Set<String> variables;
-		public ExpressionContext expression() {
-			return getRuleContext(ExpressionContext.class,0);
+		public java.util.Map<String, ExpressionType> variables;
+		public TypeExpressionContext typeExpression() {
+			return getRuleContext(TypeExpressionContext.class,0);
 		}
 		public CommandBlockContext commandBlock() {
 			return getRuleContext(CommandBlockContext.class,0);
 		}
 		public WhileContext(ParserRuleContext parent, int invokingState) { super(parent, invokingState); }
-		public WhileContext(ParserRuleContext parent, int invokingState, java.util.Set<String> variables) {
+		public WhileContext(ParserRuleContext parent, int invokingState, java.util.Map<String, ExpressionType> variables) {
 			super(parent, invokingState);
 			this.variables = variables;
 		}
@@ -745,17 +890,17 @@ public class MegaLanguageParser extends Parser {
 		}
 	}
 
-	public final WhileContext while_(java.util.Set<String> variables) throws RecognitionException {
+	public final WhileContext while_(java.util.Map<String, ExpressionType> variables) throws RecognitionException {
 		WhileContext _localctx = new WhileContext(_ctx, getState(), variables);
-		enterRule(_localctx, 16, RULE_while);
+		enterRule(_localctx, 18, RULE_while);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(75);
-			match(T__4);
-			setState(76);
-			expression(0);
-			setState(77);
+			setState(97);
+			match(T__5);
+			setState(98);
+			typeExpression(0);
+			setState(99);
 			commandBlock(variables);
 			}
 		}
@@ -772,14 +917,14 @@ public class MegaLanguageParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class CommandBlockContext extends ParserRuleContext {
-		public java.util.Set<String> variables;
+		public java.util.Map<String, ExpressionType> variables;
 		public TerminalNode LBRACKET() { return getToken(MegaLanguageParser.LBRACKET, 0); }
 		public CommandsContext commands() {
 			return getRuleContext(CommandsContext.class,0);
 		}
 		public TerminalNode RBRACKET() { return getToken(MegaLanguageParser.RBRACKET, 0); }
 		public CommandBlockContext(ParserRuleContext parent, int invokingState) { super(parent, invokingState); }
-		public CommandBlockContext(ParserRuleContext parent, int invokingState, java.util.Set<String> variables) {
+		public CommandBlockContext(ParserRuleContext parent, int invokingState, java.util.Map<String, ExpressionType> variables) {
 			super(parent, invokingState);
 			this.variables = variables;
 		}
@@ -799,18 +944,69 @@ public class MegaLanguageParser extends Parser {
 		}
 	}
 
-	public final CommandBlockContext commandBlock(java.util.Set<String> variables) throws RecognitionException {
+	public final CommandBlockContext commandBlock(java.util.Map<String, ExpressionType> variables) throws RecognitionException {
 		CommandBlockContext _localctx = new CommandBlockContext(_ctx, getState(), variables);
-		enterRule(_localctx, 18, RULE_commandBlock);
+		enterRule(_localctx, 20, RULE_commandBlock);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(79);
+			setState(101);
 			match(LBRACKET);
-			setState(80);
+			setState(102);
 			commands(_localctx.variables);
-			setState(81);
+			setState(103);
 			match(RBRACKET);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	@SuppressWarnings("CheckReturnValue")
+	public static class Comp_opContext extends ParserRuleContext {
+		public Comp_opContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_comp_op; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MegaLanguageListener ) ((MegaLanguageListener)listener).enterComp_op(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MegaLanguageListener ) ((MegaLanguageListener)listener).exitComp_op(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MegaLanguageVisitor ) return ((MegaLanguageVisitor<? extends T>)visitor).visitComp_op(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final Comp_opContext comp_op() throws RecognitionException {
+		Comp_opContext _localctx = new Comp_opContext(_ctx, getState());
+		enterRule(_localctx, 22, RULE_comp_op);
+		int _la;
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(105);
+			_la = _input.LA(1);
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 8064L) != 0)) ) {
+			_errHandler.recoverInline(this);
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
+				consume();
+			}
 			}
 		}
 		catch (RecognitionException re) {
@@ -875,23 +1071,23 @@ public class MegaLanguageParser extends Parser {
 		int _parentState = getState();
 		ExpressionContext _localctx = new ExpressionContext(_ctx, _parentState);
 		ExpressionContext _prevctx = _localctx;
-		int _startState = 20;
-		enterRecursionRule(_localctx, 20, RULE_expression, _p);
+		int _startState = 24;
+		enterRecursionRule(_localctx, 24, RULE_expression, _p);
 		int _la;
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(95);
+			setState(119);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case LPAREN:
 				{
-				setState(84);
+				setState(108);
 				match(LPAREN);
-				setState(85);
+				setState(109);
 				expression(0);
-				setState(86);
+				setState(110);
 				match(RPAREN);
 				}
 				break;
@@ -900,13 +1096,13 @@ public class MegaLanguageParser extends Parser {
 			case NUMBER:
 			case VARIABLE:
 				{
-				setState(91);
+				setState(115);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==PLUS || _la==MINUS) {
 					{
 					{
-					setState(88);
+					setState(112);
 					_la = _input.LA(1);
 					if ( !(_la==PLUS || _la==MINUS) ) {
 					_errHandler.recoverInline(this);
@@ -918,11 +1114,11 @@ public class MegaLanguageParser extends Parser {
 					}
 					}
 					}
-					setState(93);
+					setState(117);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(94);
+				setState(118);
 				atom();
 				}
 				break;
@@ -930,24 +1126,24 @@ public class MegaLanguageParser extends Parser {
 				throw new NoViableAltException(this);
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(105);
+			setState(129);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,11,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,13,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
 					_prevctx = _localctx;
 					{
-					setState(103);
+					setState(127);
 					_errHandler.sync(this);
-					switch ( getInterpreter().adaptivePredict(_input,10,_ctx) ) {
+					switch ( getInterpreter().adaptivePredict(_input,12,_ctx) ) {
 					case 1:
 						{
 						_localctx = new ExpressionContext(_parentctx, _parentState);
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
-						setState(97);
+						setState(121);
 						if (!(precpred(_ctx, 4))) throw new FailedPredicateException(this, "precpred(_ctx, 4)");
-						setState(98);
+						setState(122);
 						_la = _input.LA(1);
 						if ( !(_la==TIMES || _la==DIV) ) {
 						_errHandler.recoverInline(this);
@@ -957,7 +1153,7 @@ public class MegaLanguageParser extends Parser {
 							_errHandler.reportMatch(this);
 							consume();
 						}
-						setState(99);
+						setState(123);
 						expression(5);
 						}
 						break;
@@ -965,9 +1161,9 @@ public class MegaLanguageParser extends Parser {
 						{
 						_localctx = new ExpressionContext(_parentctx, _parentState);
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
-						setState(100);
+						setState(124);
 						if (!(precpred(_ctx, 3))) throw new FailedPredicateException(this, "precpred(_ctx, 3)");
-						setState(101);
+						setState(125);
 						_la = _input.LA(1);
 						if ( !(_la==PLUS || _la==MINUS) ) {
 						_errHandler.recoverInline(this);
@@ -977,16 +1173,16 @@ public class MegaLanguageParser extends Parser {
 							_errHandler.reportMatch(this);
 							consume();
 						}
-						setState(102);
+						setState(126);
 						expression(4);
 						}
 						break;
 					}
 					} 
 				}
-				setState(107);
+				setState(131);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,11,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,13,_ctx);
 			}
 			}
 		}
@@ -1003,83 +1199,106 @@ public class MegaLanguageParser extends Parser {
 
 	public boolean sempred(RuleContext _localctx, int ruleIndex, int predIndex) {
 		switch (ruleIndex) {
-		case 10:
+		case 0:
+			return typeExpression_sempred((TypeExpressionContext)_localctx, predIndex);
+		case 12:
 			return expression_sempred((ExpressionContext)_localctx, predIndex);
+		}
+		return true;
+	}
+	private boolean typeExpression_sempred(TypeExpressionContext _localctx, int predIndex) {
+		switch (predIndex) {
+		case 0:
+			return precpred(_ctx, 2);
 		}
 		return true;
 	}
 	private boolean expression_sempred(ExpressionContext _localctx, int predIndex) {
 		switch (predIndex) {
-		case 0:
-			return precpred(_ctx, 4);
 		case 1:
+			return precpred(_ctx, 4);
+		case 2:
 			return precpred(_ctx, 3);
 		}
 		return true;
 	}
 
 	public static final String _serializedATN =
-		"\u0004\u0001\u0016m\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
-		"\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004\u0007\u0004\u0002"+
-		"\u0005\u0007\u0005\u0002\u0006\u0007\u0006\u0002\u0007\u0007\u0007\u0002"+
-		"\b\u0007\b\u0002\t\u0007\t\u0002\n\u0007\n\u0001\u0000\u0001\u0000\u0001"+
-		"\u0000\u0003\u0000\u001a\b\u0000\u0001\u0001\u0001\u0001\u0001\u0002\u0001"+
-		"\u0002\u0001\u0002\u0001\u0002\u0003\u0002\"\b\u0002\u0001\u0003\u0003"+
-		"\u0003%\b\u0003\u0001\u0003\u0003\u0003(\b\u0003\u0001\u0003\u0001\u0003"+
-		"\u0005\u0003,\b\u0003\n\u0003\f\u0003/\t\u0003\u0001\u0003\u0003\u0003"+
-		"2\b\u0003\u0001\u0004\u0001\u0004\u0001\u0004\u0001\u0004\u0001\u0004"+
-		"\u0001\u0004\u0001\u0004\u0001\u0004\u0001\u0004\u0001\u0004\u0003\u0004"+
-		">\b\u0004\u0001\u0005\u0001\u0005\u0001\u0005\u0001\u0006\u0001\u0006"+
-		"\u0001\u0007\u0001\u0007\u0001\u0007\u0001\u0007\u0001\u0007\u0003\u0007"+
-		"J\b\u0007\u0001\b\u0001\b\u0001\b\u0001\b\u0001\t\u0001\t\u0001\t\u0001"+
-		"\t\u0001\n\u0001\n\u0001\n\u0001\n\u0001\n\u0001\n\u0005\nZ\b\n\n\n\f"+
-		"\n]\t\n\u0001\n\u0003\n`\b\n\u0001\n\u0001\n\u0001\n\u0001\n\u0001\n\u0001"+
-		"\n\u0005\nh\b\n\n\n\f\nk\t\n\u0001\n\u0000\u0001\u0014\u000b\u0000\u0002"+
-		"\u0004\u0006\b\n\f\u000e\u0010\u0012\u0014\u0000\u0002\u0001\u0000\r\u000e"+
-		"\u0001\u0000\u000f\u0010o\u0000\u0019\u0001\u0000\u0000\u0000\u0002\u001b"+
-		"\u0001\u0000\u0000\u0000\u0004!\u0001\u0000\u0000\u0000\u0006$\u0001\u0000"+
-		"\u0000\u0000\b=\u0001\u0000\u0000\u0000\n?\u0001\u0000\u0000\u0000\fB"+
-		"\u0001\u0000\u0000\u0000\u000eD\u0001\u0000\u0000\u0000\u0010K\u0001\u0000"+
-		"\u0000\u0000\u0012O\u0001\u0000\u0000\u0000\u0014_\u0001\u0000\u0000\u0000"+
-		"\u0016\u001a\u0005\u0011\u0000\u0000\u0017\u0018\u0005\u0012\u0000\u0000"+
-		"\u0018\u001a\u0006\u0000\uffff\uffff\u0000\u0019\u0016\u0001\u0000\u0000"+
-		"\u0000\u0019\u0017\u0001\u0000\u0000\u0000\u001a\u0001\u0001\u0000\u0000"+
-		"\u0000\u001b\u001c\u0003\u0006\u0003\u0000\u001c\u0003\u0001\u0000\u0000"+
-		"\u0000\u001d\"\u0003\b\u0004\u0000\u001e\"\u0003\n\u0005\u0000\u001f\""+
-		"\u0003\u000e\u0007\u0000 \"\u0003\u0010\b\u0000!\u001d\u0001\u0000\u0000"+
-		"\u0000!\u001e\u0001\u0000\u0000\u0000!\u001f\u0001\u0000\u0000\u0000!"+
-		" \u0001\u0000\u0000\u0000\"\u0005\u0001\u0000\u0000\u0000#%\u0005\u0015"+
-		"\u0000\u0000$#\u0001\u0000\u0000\u0000$%\u0001\u0000\u0000\u0000%\'\u0001"+
-		"\u0000\u0000\u0000&(\u0003\u0004\u0002\u0000\'&\u0001\u0000\u0000\u0000"+
-		"\'(\u0001\u0000\u0000\u0000(-\u0001\u0000\u0000\u0000)*\u0005\u0015\u0000"+
-		"\u0000*,\u0003\u0004\u0002\u0000+)\u0001\u0000\u0000\u0000,/\u0001\u0000"+
-		"\u0000\u0000-+\u0001\u0000\u0000\u0000-.\u0001\u0000\u0000\u0000.1\u0001"+
-		"\u0000\u0000\u0000/-\u0001\u0000\u0000\u000002\u0005\u0015\u0000\u0000"+
-		"10\u0001\u0000\u0000\u000012\u0001\u0000\u0000\u00002\u0007\u0001\u0000"+
-		"\u0000\u000034\u0005\u0012\u0000\u000045\u0005\t\u0000\u000056\u0003\u0014"+
-		"\n\u000067\u0006\u0004\uffff\uffff\u00007>\u0001\u0000\u0000\u000089\u0005"+
-		"\u0012\u0000\u00009:\u0005\t\u0000\u0000:;\u0003\f\u0006\u0000;<\u0006"+
-		"\u0004\uffff\uffff\u0000<>\u0001\u0000\u0000\u0000=3\u0001\u0000\u0000"+
-		"\u0000=8\u0001\u0000\u0000\u0000>\t\u0001\u0000\u0000\u0000?@\u0005\u0001"+
-		"\u0000\u0000@A\u0003\u0014\n\u0000A\u000b\u0001\u0000\u0000\u0000BC\u0005"+
-		"\u0002\u0000\u0000C\r\u0001\u0000\u0000\u0000DE\u0005\u0003\u0000\u0000"+
-		"EF\u0003\u0014\n\u0000FI\u0003\u0012\t\u0000GH\u0005\u0004\u0000\u0000"+
-		"HJ\u0003\u0012\t\u0000IG\u0001\u0000\u0000\u0000IJ\u0001\u0000\u0000\u0000"+
-		"J\u000f\u0001\u0000\u0000\u0000KL\u0005\u0005\u0000\u0000LM\u0003\u0014"+
-		"\n\u0000MN\u0003\u0012\t\u0000N\u0011\u0001\u0000\u0000\u0000OP\u0005"+
-		"\u0007\u0000\u0000PQ\u0003\u0006\u0003\u0000QR\u0005\b\u0000\u0000R\u0013"+
-		"\u0001\u0000\u0000\u0000ST\u0006\n\uffff\uffff\u0000TU\u0005\u000b\u0000"+
-		"\u0000UV\u0003\u0014\n\u0000VW\u0005\f\u0000\u0000W`\u0001\u0000\u0000"+
-		"\u0000XZ\u0007\u0000\u0000\u0000YX\u0001\u0000\u0000\u0000Z]\u0001\u0000"+
-		"\u0000\u0000[Y\u0001\u0000\u0000\u0000[\\\u0001\u0000\u0000\u0000\\^\u0001"+
-		"\u0000\u0000\u0000][\u0001\u0000\u0000\u0000^`\u0003\u0000\u0000\u0000"+
-		"_S\u0001\u0000\u0000\u0000_[\u0001\u0000\u0000\u0000`i\u0001\u0000\u0000"+
-		"\u0000ab\n\u0004\u0000\u0000bc\u0007\u0001\u0000\u0000ch\u0003\u0014\n"+
-		"\u0005de\n\u0003\u0000\u0000ef\u0007\u0000\u0000\u0000fh\u0003\u0014\n"+
-		"\u0004ga\u0001\u0000\u0000\u0000gd\u0001\u0000\u0000\u0000hk\u0001\u0000"+
-		"\u0000\u0000ig\u0001\u0000\u0000\u0000ij\u0001\u0000\u0000\u0000j\u0015"+
-		"\u0001\u0000\u0000\u0000ki\u0001\u0000\u0000\u0000\f\u0019!$\'-1=I[_g"+
-		"i";
+		"\u0004\u0001\u001d\u0085\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001"+
+		"\u0002\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004\u0007\u0004"+
+		"\u0002\u0005\u0007\u0005\u0002\u0006\u0007\u0006\u0002\u0007\u0007\u0007"+
+		"\u0002\b\u0007\b\u0002\t\u0007\t\u0002\n\u0007\n\u0002\u000b\u0007\u000b"+
+		"\u0002\f\u0007\f\u0001\u0000\u0001\u0000\u0001\u0000\u0001\u0000\u0001"+
+		"\u0000\u0001\u0000\u0001\u0000\u0001\u0000\u0001\u0000\u0005\u0000$\b"+
+		"\u0000\n\u0000\f\u0000\'\t\u0000\u0001\u0001\u0001\u0001\u0001\u0001\u0003"+
+		"\u0001,\b\u0001\u0001\u0002\u0001\u0002\u0001\u0003\u0001\u0003\u0001"+
+		"\u0003\u0001\u0003\u0003\u00034\b\u0003\u0001\u0004\u0003\u00047\b\u0004"+
+		"\u0001\u0004\u0003\u0004:\b\u0004\u0001\u0004\u0001\u0004\u0005\u0004"+
+		">\b\u0004\n\u0004\f\u0004A\t\u0004\u0001\u0004\u0003\u0004D\b\u0004\u0001"+
+		"\u0005\u0001\u0005\u0001\u0005\u0001\u0005\u0001\u0005\u0001\u0005\u0001"+
+		"\u0005\u0001\u0005\u0001\u0005\u0001\u0005\u0003\u0005P\b\u0005\u0001"+
+		"\u0006\u0001\u0006\u0001\u0006\u0001\u0007\u0001\u0007\u0001\u0007\u0001"+
+		"\u0007\u0003\u0007Y\b\u0007\u0001\b\u0001\b\u0001\b\u0001\b\u0001\b\u0003"+
+		"\b`\b\b\u0001\t\u0001\t\u0001\t\u0001\t\u0001\n\u0001\n\u0001\n\u0001"+
+		"\n\u0001\u000b\u0001\u000b\u0001\f\u0001\f\u0001\f\u0001\f\u0001\f\u0001"+
+		"\f\u0005\fr\b\f\n\f\f\fu\t\f\u0001\f\u0003\fx\b\f\u0001\f\u0001\f\u0001"+
+		"\f\u0001\f\u0001\f\u0001\f\u0005\f\u0080\b\f\n\f\f\f\u0083\t\f\u0001\f"+
+		"\u0000\u0002\u0000\u0018\r\u0000\u0002\u0004\u0006\b\n\f\u000e\u0010\u0012"+
+		"\u0014\u0016\u0018\u0000\u0003\u0001\u0000\u0007\f\u0001\u0000\u0014\u0015"+
+		"\u0001\u0000\u0016\u0017\u0087\u0000\u001a\u0001\u0000\u0000\u0000\u0002"+
+		"+\u0001\u0000\u0000\u0000\u0004-\u0001\u0000\u0000\u0000\u00063\u0001"+
+		"\u0000\u0000\u0000\b6\u0001\u0000\u0000\u0000\nO\u0001\u0000\u0000\u0000"+
+		"\fQ\u0001\u0000\u0000\u0000\u000eX\u0001\u0000\u0000\u0000\u0010Z\u0001"+
+		"\u0000\u0000\u0000\u0012a\u0001\u0000\u0000\u0000\u0014e\u0001\u0000\u0000"+
+		"\u0000\u0016i\u0001\u0000\u0000\u0000\u0018w\u0001\u0000\u0000\u0000\u001a"+
+		"\u001b\u0006\u0000\uffff\uffff\u0000\u001b\u001c\u0003\u0018\f\u0000\u001c"+
+		"\u001d\u0006\u0000\uffff\uffff\u0000\u001d%\u0001\u0000\u0000\u0000\u001e"+
+		"\u001f\n\u0002\u0000\u0000\u001f \u0003\u0016\u000b\u0000 !\u0003\u0000"+
+		"\u0000\u0003!\"\u0006\u0000\uffff\uffff\u0000\"$\u0001\u0000\u0000\u0000"+
+		"#\u001e\u0001\u0000\u0000\u0000$\'\u0001\u0000\u0000\u0000%#\u0001\u0000"+
+		"\u0000\u0000%&\u0001\u0000\u0000\u0000&\u0001\u0001\u0000\u0000\u0000"+
+		"\'%\u0001\u0000\u0000\u0000(,\u0005\u0018\u0000\u0000)*\u0005\u0019\u0000"+
+		"\u0000*,\u0006\u0001\uffff\uffff\u0000+(\u0001\u0000\u0000\u0000+)\u0001"+
+		"\u0000\u0000\u0000,\u0003\u0001\u0000\u0000\u0000-.\u0003\b\u0004\u0000"+
+		".\u0005\u0001\u0000\u0000\u0000/4\u0003\n\u0005\u000004\u0003\f\u0006"+
+		"\u000014\u0003\u0010\b\u000024\u0003\u0012\t\u00003/\u0001\u0000\u0000"+
+		"\u000030\u0001\u0000\u0000\u000031\u0001\u0000\u0000\u000032\u0001\u0000"+
+		"\u0000\u00004\u0007\u0001\u0000\u0000\u000057\u0005\u001c\u0000\u0000"+
+		"65\u0001\u0000\u0000\u000067\u0001\u0000\u0000\u000079\u0001\u0000\u0000"+
+		"\u00008:\u0003\u0006\u0003\u000098\u0001\u0000\u0000\u00009:\u0001\u0000"+
+		"\u0000\u0000:?\u0001\u0000\u0000\u0000;<\u0005\u001c\u0000\u0000<>\u0003"+
+		"\u0006\u0003\u0000=;\u0001\u0000\u0000\u0000>A\u0001\u0000\u0000\u0000"+
+		"?=\u0001\u0000\u0000\u0000?@\u0001\u0000\u0000\u0000@C\u0001\u0000\u0000"+
+		"\u0000A?\u0001\u0000\u0000\u0000BD\u0005\u001c\u0000\u0000CB\u0001\u0000"+
+		"\u0000\u0000CD\u0001\u0000\u0000\u0000D\t\u0001\u0000\u0000\u0000EF\u0005"+
+		"\u0019\u0000\u0000FG\u0005\u0010\u0000\u0000GH\u0003\u0000\u0000\u0000"+
+		"HI\u0006\u0005\uffff\uffff\u0000IP\u0001\u0000\u0000\u0000JK\u0005\u0019"+
+		"\u0000\u0000KL\u0005\u0010\u0000\u0000LM\u0003\u000e\u0007\u0000MN\u0006"+
+		"\u0005\uffff\uffff\u0000NP\u0001\u0000\u0000\u0000OE\u0001\u0000\u0000"+
+		"\u0000OJ\u0001\u0000\u0000\u0000P\u000b\u0001\u0000\u0000\u0000QR\u0005"+
+		"\u0001\u0000\u0000RS\u0003\u0000\u0000\u0000S\r\u0001\u0000\u0000\u0000"+
+		"TU\u0005\u0002\u0000\u0000UY\u0006\u0007\uffff\uffff\u0000VW\u0005\u0003"+
+		"\u0000\u0000WY\u0006\u0007\uffff\uffff\u0000XT\u0001\u0000\u0000\u0000"+
+		"XV\u0001\u0000\u0000\u0000Y\u000f\u0001\u0000\u0000\u0000Z[\u0005\u0004"+
+		"\u0000\u0000[\\\u0003\u0000\u0000\u0000\\_\u0003\u0014\n\u0000]^\u0005"+
+		"\u0005\u0000\u0000^`\u0003\u0014\n\u0000_]\u0001\u0000\u0000\u0000_`\u0001"+
+		"\u0000\u0000\u0000`\u0011\u0001\u0000\u0000\u0000ab\u0005\u0006\u0000"+
+		"\u0000bc\u0003\u0000\u0000\u0000cd\u0003\u0014\n\u0000d\u0013\u0001\u0000"+
+		"\u0000\u0000ef\u0005\u000e\u0000\u0000fg\u0003\b\u0004\u0000gh\u0005\u000f"+
+		"\u0000\u0000h\u0015\u0001\u0000\u0000\u0000ij\u0007\u0000\u0000\u0000"+
+		"j\u0017\u0001\u0000\u0000\u0000kl\u0006\f\uffff\uffff\u0000lm\u0005\u0012"+
+		"\u0000\u0000mn\u0003\u0018\f\u0000no\u0005\u0013\u0000\u0000ox\u0001\u0000"+
+		"\u0000\u0000pr\u0007\u0001\u0000\u0000qp\u0001\u0000\u0000\u0000ru\u0001"+
+		"\u0000\u0000\u0000sq\u0001\u0000\u0000\u0000st\u0001\u0000\u0000\u0000"+
+		"tv\u0001\u0000\u0000\u0000us\u0001\u0000\u0000\u0000vx\u0003\u0002\u0001"+
+		"\u0000wk\u0001\u0000\u0000\u0000ws\u0001\u0000\u0000\u0000x\u0081\u0001"+
+		"\u0000\u0000\u0000yz\n\u0004\u0000\u0000z{\u0007\u0002\u0000\u0000{\u0080"+
+		"\u0003\u0018\f\u0005|}\n\u0003\u0000\u0000}~\u0007\u0001\u0000\u0000~"+
+		"\u0080\u0003\u0018\f\u0004\u007fy\u0001\u0000\u0000\u0000\u007f|\u0001"+
+		"\u0000\u0000\u0000\u0080\u0083\u0001\u0000\u0000\u0000\u0081\u007f\u0001"+
+		"\u0000\u0000\u0000\u0081\u0082\u0001\u0000\u0000\u0000\u0082\u0019\u0001"+
+		"\u0000\u0000\u0000\u0083\u0081\u0001\u0000\u0000\u0000\u000e%+369?COX"+
+		"_sw\u007f\u0081";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

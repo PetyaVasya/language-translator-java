@@ -1,3 +1,4 @@
+import language.ExpressionType;
 import language.MegaLanguageBaseVisitor;
 import language.MegaLanguageLexer;
 import language.MegaLanguageParser;
@@ -9,9 +10,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class CVisitor extends MegaLanguageBaseVisitor<StringBuilder> {
 
@@ -78,8 +79,9 @@ public class CVisitor extends MegaLanguageBaseVisitor<StringBuilder> {
 
         Arrays.stream(ctxs)
                 .map(v -> v.variables)
+                .map(Map::entrySet)
                 .flatMap(Collection::stream)
-                .map(v -> visitVarDeclaration(v, EMPTY_SB))
+                .map(v -> visitVarDeclaration(v.getKey(), v.getValue(), EMPTY_SB))
                 .map(this::fromNewLine)
                 .forEach(res::append);
         if (res.isEmpty()) {
@@ -97,7 +99,7 @@ public class CVisitor extends MegaLanguageBaseVisitor<StringBuilder> {
                 "if (",
                 ctx.commandBlock().toArray(MegaLanguageParser.CommandBlockContext[]::new)
         )
-                .append(visit(ctx.expression()))
+                .append(visit(ctx.typeExpression()))
                 .append(") ")
                 .append(visit(ctx.commandBlock(0)));
         if (ctx.else_ != null) {
@@ -110,7 +112,7 @@ public class CVisitor extends MegaLanguageBaseVisitor<StringBuilder> {
     public StringBuilder visitWhile(MegaLanguageParser.WhileContext ctx) {
         MegaLanguageParser.CommandBlockContext commandBlockContext = ctx.commandBlock();
         return statementVariables("while (", commandBlockContext)
-                .append(visit(ctx.expression()))
+                .append(visit(ctx.typeExpression()))
                 .append(") ")
                 .append(visit(commandBlockContext));
     }
@@ -120,6 +122,14 @@ public class CVisitor extends MegaLanguageBaseVisitor<StringBuilder> {
         return stringBuilder("scanf(\"%d\", &").append(ctx.name).append(")");
     }
 
+    @Override
+    public StringBuilder visitReadBoolean(MegaLanguageParser.ReadBooleanContext ctx) {
+        String tmpVarName = genTmpVar();
+        return visitVarDeclaration(tmpVarName, ExpressionType.INT, EMPTY_SB)
+                .append(fromNewLine("scanf(\"%d\", &"))
+                .append(tmpVarName).append(")")
+                .append(fromNewLine(visitVarDeclaration(ctx.name, ExpressionType.BOOLEAN, stringBuilder(tmpVarName))));
+    }
 
     @Override
     public StringBuilder visitPrint(MegaLanguageParser.PrintContext ctx) {
@@ -128,16 +138,16 @@ public class CVisitor extends MegaLanguageBaseVisitor<StringBuilder> {
 
     @Override
     public StringBuilder visitVarEvaluated(MegaLanguageParser.VarEvaluatedContext ctx) {
-        return visitVarDeclaration(ctx.VARIABLE(), visit(ctx.expression()));
+        return visitVarDeclaration(ctx.VARIABLE(), ctx.type, visit(ctx.typeExpression()));
     }
 
     @Override
     public StringBuilder visitVarRead(MegaLanguageParser.VarReadContext ctx) {
-        return visitVarDeclaration(ctx.VARIABLE(), stringBuilder())
+        return visitVarDeclaration(ctx.VARIABLE(), ctx.type, stringBuilder())
                 .append(fromNewLine(visit(ctx.read())));
     }
 
-    private StringBuilder visitVarDeclaration(String variableName, StringBuilder content) {
+    private StringBuilder visitVarDeclaration(String variableName, ExpressionType type, StringBuilder content) {
         StringBuilder res = new StringBuilder();
         if (declaredVariables.contains(variableName)) {
             if (content.isEmpty()) {
@@ -145,7 +155,7 @@ public class CVisitor extends MegaLanguageBaseVisitor<StringBuilder> {
             }
         } else {
             declaredVariables.add(variableName);
-            res.append("int ");
+            res.append(type.cName).append(" ");
             if (content.isEmpty()) {
                 return res.append(variableName).append(COMMAND_END);
             }
@@ -154,8 +164,13 @@ public class CVisitor extends MegaLanguageBaseVisitor<StringBuilder> {
         return res.append(variableName).append(" = ").append(content);
     }
 
-    private StringBuilder visitVarDeclaration(TerminalNode variable, StringBuilder content) {
-        return visitVarDeclaration(variable.getText(), content);
+    private StringBuilder visitVarDeclaration(TerminalNode variable, ExpressionType type, StringBuilder content) {
+        return visitVarDeclaration(variable.getText(), type, content);
+    }
+
+    @Override
+    public StringBuilder visitComp_op(MegaLanguageParser.Comp_opContext ctx) {
+        return stringBuilder(ctx.getText());
     }
 
     @Override
@@ -182,7 +197,6 @@ public class CVisitor extends MegaLanguageBaseVisitor<StringBuilder> {
         while (declaredVariables.contains(tmpVarName)) {
             tmpVarName = "tmp" + ++tmpCount;
         }
-        declaredVariables.add(tmpVarName);
         return tmpVarName;
     }
 

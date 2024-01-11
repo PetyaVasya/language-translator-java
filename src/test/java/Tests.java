@@ -90,9 +90,15 @@ public class Tests {
                 Arguments.of("read/one"),
                 Arguments.of("read/one2"),
                 Arguments.of("read/two"),
+                Arguments.of("cond/1"),
+                Arguments.of("cond/2"),
+                Arguments.of("cond/3"),
                 Arguments.of("if/1"),
                 Arguments.of("if/2"),
-                Arguments.of("while/countDown")
+                Arguments.of("if/3"),
+                Arguments.of("if/4"),
+                Arguments.of("while/countDown"),
+                Arguments.of("while/log2")
         );
     }
 

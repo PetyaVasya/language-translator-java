@@ -6,53 +6,75 @@ import Arithmetic;
 package language;
 }
 
+typeExpression returns [ExpressionType type]
+    : typeExpression comp_op typeExpression {$type = ExpressionType.BOOLEAN;}
+    | expression {$type = ExpressionType.INT;}
+    ;
+
 atom
    : NUMBER
    | VARIABLE {
-   	if ( !$commands::variables.contains($VARIABLE.text) ) {
+   	if ( !$commands::variables.containsKey($VARIABLE.text) ) {
    	    throw new language.UnknownVariableException($VARIABLE.text, $parser);
    	}
    }
    ;
 
 program
-    : commands[new java.util.HashSet<>()]
+    : commands[new java.util.HashMap<>()]
     ;
 
-command[java.util.Set<String> variables]
+command[java.util.Map<String, ExpressionType> variables]
     : varDeclaration[variables]  # baseCommand
     | print                      # baseCommand
     | condition[variables]       # statement
     | while[variables]           # statement
     ;
 
-commands[java.util.Set<String> variables]
+commands[java.util.Map<String, ExpressionType> variables]
     : LINE_END? command[variables]? (LINE_END command[variables])* LINE_END?
     ;
 
-varDeclaration[java.util.Set<String> variables]
-    : VARIABLE EQ expression {$variables.add($VARIABLE.text);} # varEvaluated
-    | VARIABLE EQ read[$VARIABLE.text] {$variables.add($VARIABLE.text);}      # varRead
+varDeclaration[java.util.Map<String, ExpressionType> variables]
+    locals [ExpressionType type]
+    : VARIABLE EQ typeExpression {
+        $type = $typeExpression.type;
+        $variables.put($VARIABLE.text, $type);
+    } # varEvaluated
+    | VARIABLE EQ read[$VARIABLE.text] {
+        $type = $read.type;
+        $variables.put($VARIABLE.text, $type);
+    } # varRead
     ;
 
 print
-    : 'печать' expression
+    : 'печать' typeExpression
     ;
 
-read[String name]
-    : 'считатьЧисло' # readInt
+read[String name] returns [ExpressionType type]
+    : 'считатьЧисло' {$type = ExpressionType.INT;}     # readInt
+    | 'считатьЛогич' {$type = ExpressionType.BOOLEAN;} # readBoolean
     ;
 
-condition[java.util.Set<String> variables]
-    : 'если' expression commandBlock[variables] (else='иначе' commandBlock[variables])?
+condition[java.util.Map<String, ExpressionType> variables]
+    : 'если' typeExpression commandBlock[variables] (else='иначе' commandBlock[variables])?
     ;
 
-while[java.util.Set<String> variables]
-    : 'пока' expression commandBlock[variables]
+while[java.util.Map<String, ExpressionType> variables]
+    : 'пока' typeExpression commandBlock[variables]
     ;
 
-commandBlock[java.util.Set<String> variables]
+commandBlock[java.util.Map<String, ExpressionType> variables]
     : LBRACKET commands[$variables] RBRACKET
+    ;
+
+comp_op
+    : '<'
+    | '>'
+    | '=='
+    | '>='
+    | '<='
+    | '!='
     ;
 
 COMMENT

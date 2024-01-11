@@ -19,6 +19,18 @@ public class MegaLanguageBaseListener implements MegaLanguageListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterTypeExpression(MegaLanguageParser.TypeExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitTypeExpression(MegaLanguageParser.TypeExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterAtom(MegaLanguageParser.AtomContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -127,6 +139,18 @@ public class MegaLanguageBaseListener implements MegaLanguageListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterReadBoolean(MegaLanguageParser.ReadBooleanContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitReadBoolean(MegaLanguageParser.ReadBooleanContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterCondition(MegaLanguageParser.ConditionContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -158,6 +182,18 @@ public class MegaLanguageBaseListener implements MegaLanguageListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitCommandBlock(MegaLanguageParser.CommandBlockContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterComp_op(MegaLanguageParser.Comp_opContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitComp_op(MegaLanguageParser.Comp_opContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

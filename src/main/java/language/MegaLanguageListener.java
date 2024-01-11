@@ -10,6 +10,16 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
  */
 public interface MegaLanguageListener extends ParseTreeListener {
 	/**
+	 * Enter a parse tree produced by {@link MegaLanguageParser#typeExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterTypeExpression(MegaLanguageParser.TypeExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MegaLanguageParser#typeExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitTypeExpression(MegaLanguageParser.TypeExpressionContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MegaLanguageParser#atom}.
 	 * @param ctx the parse tree
 	 */
@@ -110,6 +120,18 @@ public interface MegaLanguageListener extends ParseTreeListener {
 	 */
 	void exitReadInt(MegaLanguageParser.ReadIntContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code readBoolean}
+	 * labeled alternative in {@link MegaLanguageParser#read}.
+	 * @param ctx the parse tree
+	 */
+	void enterReadBoolean(MegaLanguageParser.ReadBooleanContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code readBoolean}
+	 * labeled alternative in {@link MegaLanguageParser#read}.
+	 * @param ctx the parse tree
+	 */
+	void exitReadBoolean(MegaLanguageParser.ReadBooleanContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MegaLanguageParser#condition}.
 	 * @param ctx the parse tree
 	 */
@@ -139,6 +161,16 @@ public interface MegaLanguageListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitCommandBlock(MegaLanguageParser.CommandBlockContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MegaLanguageParser#comp_op}.
+	 * @param ctx the parse tree
+	 */
+	void enterComp_op(MegaLanguageParser.Comp_opContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MegaLanguageParser#comp_op}.
+	 * @param ctx the parse tree
+	 */
+	void exitComp_op(MegaLanguageParser.Comp_opContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MegaLanguageParser#expression}.
 	 * @param ctx the parse tree

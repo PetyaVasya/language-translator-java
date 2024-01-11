@@ -13,6 +13,12 @@ import org.antlr.v4.runtime.tree.ParseTreeVisitor;
  */
 public interface MegaLanguageVisitor<T> extends ParseTreeVisitor<T> {
 	/**
+	 * Visit a parse tree produced by {@link MegaLanguageParser#typeExpression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTypeExpression(MegaLanguageParser.TypeExpressionContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link MegaLanguageParser#atom}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -72,6 +78,13 @@ public interface MegaLanguageVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitReadInt(MegaLanguageParser.ReadIntContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code readBoolean}
+	 * labeled alternative in {@link MegaLanguageParser#read}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitReadBoolean(MegaLanguageParser.ReadBooleanContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link MegaLanguageParser#condition}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -89,6 +102,12 @@ public interface MegaLanguageVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitCommandBlock(MegaLanguageParser.CommandBlockContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MegaLanguageParser#comp_op}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitComp_op(MegaLanguageParser.Comp_opContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MegaLanguageParser#expression}.
 	 * @param ctx the parse tree
