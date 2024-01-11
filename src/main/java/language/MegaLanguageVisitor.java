@@ -13,6 +13,12 @@ import org.antlr.v4.runtime.tree.ParseTreeVisitor;
  */
 public interface MegaLanguageVisitor<T> extends ParseTreeVisitor<T> {
 	/**
+	 * Visit a parse tree produced by {@link MegaLanguageParser#atom}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAtom(MegaLanguageParser.AtomContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link MegaLanguageParser#program}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -72,12 +78,6 @@ public interface MegaLanguageVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitCondition(MegaLanguageParser.ConditionContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MegaLanguageParser#elseCondition}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitElseCondition(MegaLanguageParser.ElseConditionContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link MegaLanguageParser#while}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -95,10 +95,4 @@ public interface MegaLanguageVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitExpression(MegaLanguageParser.ExpressionContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MegaLanguageParser#atom}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitAtom(MegaLanguageParser.AtomContext ctx);
 }

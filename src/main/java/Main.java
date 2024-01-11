@@ -18,6 +18,7 @@ public class Main {
             );
             TokenStream tokenStream = new CommonTokenStream(megaLanguageLexer);
             MegaLanguageParser parser = new MegaLanguageParser(tokenStream);
+            parser.addErrorListener(new ThrowingErrorListener());
             ParseTree tree = parser.program();
             CVisitor visitor = new CVisitor();
             fileWriter.write(visitor.visit(tree).toString());

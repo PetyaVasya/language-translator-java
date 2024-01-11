@@ -10,6 +10,16 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
  */
 public interface MegaLanguageListener extends ParseTreeListener {
 	/**
+	 * Enter a parse tree produced by {@link MegaLanguageParser#atom}.
+	 * @param ctx the parse tree
+	 */
+	void enterAtom(MegaLanguageParser.AtomContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MegaLanguageParser#atom}.
+	 * @param ctx the parse tree
+	 */
+	void exitAtom(MegaLanguageParser.AtomContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MegaLanguageParser#program}.
 	 * @param ctx the parse tree
 	 */
@@ -110,16 +120,6 @@ public interface MegaLanguageListener extends ParseTreeListener {
 	 */
 	void exitCondition(MegaLanguageParser.ConditionContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MegaLanguageParser#elseCondition}.
-	 * @param ctx the parse tree
-	 */
-	void enterElseCondition(MegaLanguageParser.ElseConditionContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MegaLanguageParser#elseCondition}.
-	 * @param ctx the parse tree
-	 */
-	void exitElseCondition(MegaLanguageParser.ElseConditionContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link MegaLanguageParser#while}.
 	 * @param ctx the parse tree
 	 */
@@ -149,14 +149,4 @@ public interface MegaLanguageListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitExpression(MegaLanguageParser.ExpressionContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MegaLanguageParser#atom}.
-	 * @param ctx the parse tree
-	 */
-	void enterAtom(MegaLanguageParser.AtomContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MegaLanguageParser#atom}.
-	 * @param ctx the parse tree
-	 */
-	void exitAtom(MegaLanguageParser.AtomContext ctx);
 }

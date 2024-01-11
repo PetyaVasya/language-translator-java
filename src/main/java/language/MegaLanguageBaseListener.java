@@ -19,6 +19,18 @@ public class MegaLanguageBaseListener implements MegaLanguageListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterAtom(MegaLanguageParser.AtomContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAtom(MegaLanguageParser.AtomContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterProgram(MegaLanguageParser.ProgramContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -127,18 +139,6 @@ public class MegaLanguageBaseListener implements MegaLanguageListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterElseCondition(MegaLanguageParser.ElseConditionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitElseCondition(MegaLanguageParser.ElseConditionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterWhile(MegaLanguageParser.WhileContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -170,18 +170,6 @@ public class MegaLanguageBaseListener implements MegaLanguageListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitExpression(MegaLanguageParser.ExpressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterAtom(MegaLanguageParser.AtomContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitAtom(MegaLanguageParser.AtomContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

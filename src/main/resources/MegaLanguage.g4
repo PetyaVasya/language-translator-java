@@ -6,24 +6,33 @@ import Arithmetic;
 package language;
 }
 
+atom
+   : NUMBER
+   | VARIABLE {
+   	if ( !$commands::variables.contains($VARIABLE.text) ) {
+   	    throw new language.UnknownVariableException($VARIABLE.text, $parser);
+   	}
+   }
+   ;
+
 program
-    : commands
+    : commands[new java.util.HashSet<>()]
     ;
 
-command
-    : varDeclaration  # baseCommand
-    | print           # baseCommand
-    | condition       # statement
-    | while           # statement
+command[java.util.Set<String> variables]
+    : varDeclaration[variables]  # baseCommand
+    | print                      # baseCommand
+    | condition[variables]       # statement
+    | while[variables]           # statement
     ;
 
-commands
-    : LINE_END? command? (LINE_END command)* LINE_END?
+commands[java.util.Set<String> variables]
+    : LINE_END? command[variables]? (LINE_END command[variables])* LINE_END?
     ;
 
-varDeclaration
-    : VARIABLE EQ expression # varEvaluated
-    | VARIABLE EQ read[$VARIABLE.text]       # varRead
+varDeclaration[java.util.Set<String> variables]
+    : VARIABLE EQ expression {$variables.add($VARIABLE.text);} # varEvaluated
+    | VARIABLE EQ read[$VARIABLE.text] {$variables.add($VARIABLE.text);}      # varRead
     ;
 
 print
@@ -34,24 +43,20 @@ read[String name]
     : 'считатьЧисло' # readInt
     ;
 
-condition
-    : 'если' expression commandBlock elseCondition?
+condition[java.util.Set<String> variables]
+    : 'если' expression commandBlock[variables] (else='иначе' commandBlock[variables])?
     ;
 
-elseCondition
-    : 'иначе' commandBlock
+while[java.util.Set<String> variables]
+    : 'пока' expression commandBlock[variables]
     ;
 
-while
-    : 'пока' expression commandBlock
-    ;
-
-commandBlock
-    : LBRACKET commands RBRACKET
+commandBlock[java.util.Set<String> variables]
+    : LBRACKET commands[$variables] RBRACKET
     ;
 
 COMMENT
-    : '#' ~[\n]* -> channel (HIDDEN)
+    : '#' .*? [\r\n]+ -> skip
     ;
 
 LBRACKET
@@ -67,6 +72,6 @@ EQ
     ;
 
 WS
-   : ([\r]+ | SPACE) -> channel (HIDDEN)
+   : ([\r]+ | SPACE) -> skip
    ;
 

@@ -57,7 +57,7 @@ LETTER
 
 
 WS
-   : (LINE_END | SPACE) -> channel (HIDDEN)
+   : (LINE_END | SPACE) -> skip
    ;
 
 LINE_END

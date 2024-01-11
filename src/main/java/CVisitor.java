@@ -1,10 +1,15 @@
 import language.MegaLanguageBaseVisitor;
 import language.MegaLanguageLexer;
 import language.MegaLanguageParser;
+import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -14,6 +19,7 @@ public class CVisitor extends MegaLanguageBaseVisitor<StringBuilder> {
             MegaLanguageLexer.LINE_END
     );
     private static final String COMMAND_END = ";";
+    private static final StringBuilder EMPTY_SB = new StringBuilder();
 
     private int nestedCount;
     private final Set<String> declaredVariables;
@@ -26,6 +32,12 @@ public class CVisitor extends MegaLanguageBaseVisitor<StringBuilder> {
         this.declaredVariables = new HashSet<>();
         this.variableRename = new HashMap<>();
         this.tmpCount = 0;
+    }
+
+    @Override
+    public StringBuilder visitErrorNode(ErrorNode node) {
+        System.out.println(123);
+        return super.visitErrorNode(node);
     }
 
     @Override
@@ -54,25 +66,53 @@ public class CVisitor extends MegaLanguageBaseVisitor<StringBuilder> {
     }
 
     @Override
+    public StringBuilder visitCommands(MegaLanguageParser.CommandsContext ctx) {
+        if (ctx.command().isEmpty()) {
+            return EMPTY_SB;
+        }
+        return super.visitCommands(ctx);
+    }
+
+    private StringBuilder statementVariables(String statementStart, MegaLanguageParser.CommandBlockContext... ctxs) {
+        StringBuilder res = new StringBuilder();
+
+        Arrays.stream(ctxs)
+                .map(v -> v.variables)
+                .flatMap(Collection::stream)
+                .map(v -> visitVarDeclaration(v, EMPTY_SB))
+                .map(this::fromNewLine)
+                .forEach(res::append);
+        if (res.isEmpty()) {
+            res.append(statementStart);
+        } else {
+            res.append(fromNewLine(statementStart));
+        }
+        return res;
+    }
+
+    @Override
     public StringBuilder visitCondition(MegaLanguageParser.ConditionContext ctx) {
-        StringBuilder res = stringBuilder()
-                .append("if (")
+
+        StringBuilder res = statementVariables(
+                "if (",
+                ctx.commandBlock().toArray(MegaLanguageParser.CommandBlockContext[]::new)
+        )
                 .append(visit(ctx.expression()))
                 .append(") ")
-                .append(visit(ctx.commandBlock()));
-        MegaLanguageParser.ElseConditionContext elseCtx = ctx.elseCondition();
-        if (elseCtx != null) {
-            res.append(" else ").append(visit(elseCtx));
+                .append(visit(ctx.commandBlock(0)));
+        if (ctx.else_ != null) {
+            res.append(" else ").append(visit(ctx.commandBlock(ctx.commandBlock().size() - 1)));
         }
         return res;
     }
 
     @Override
     public StringBuilder visitWhile(MegaLanguageParser.WhileContext ctx) {
-        return stringBuilder("while (")
+        MegaLanguageParser.CommandBlockContext commandBlockContext = ctx.commandBlock();
+        return statementVariables("while (", commandBlockContext)
                 .append(visit(ctx.expression()))
                 .append(") ")
-                .append(visit(ctx.commandBlock()));
+                .append(visit(commandBlockContext));
     }
 
     @Override
@@ -94,12 +134,10 @@ public class CVisitor extends MegaLanguageBaseVisitor<StringBuilder> {
     @Override
     public StringBuilder visitVarRead(MegaLanguageParser.VarReadContext ctx) {
         return visitVarDeclaration(ctx.VARIABLE(), stringBuilder())
-                .append(COMMAND_END)
                 .append(fromNewLine(visit(ctx.read())));
     }
 
-    private StringBuilder visitVarDeclaration(TerminalNode variable, StringBuilder content) {
-        String variableName = variable.getText();
+    private StringBuilder visitVarDeclaration(String variableName, StringBuilder content) {
         StringBuilder res = new StringBuilder();
         if (declaredVariables.contains(variableName)) {
             if (content.isEmpty()) {
@@ -109,11 +147,15 @@ public class CVisitor extends MegaLanguageBaseVisitor<StringBuilder> {
             declaredVariables.add(variableName);
             res.append("int ");
             if (content.isEmpty()) {
-                return res.append(variableName);
+                return res.append(variableName).append(COMMAND_END);
             }
         }
 
         return res.append(variableName).append(" = ").append(content);
+    }
+
+    private StringBuilder visitVarDeclaration(TerminalNode variable, StringBuilder content) {
+        return visitVarDeclaration(variable.getText(), content);
     }
 
     @Override
